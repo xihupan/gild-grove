@@ -42,12 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
         `Name: ${data.get("name")}`,
         `Company: ${data.get("company") || "Not provided"}`,
         `Email: ${data.get("email")}`,
+        `Country / region: ${data.get("country") || "Not provided"}`,
         `Product: ${data.get("interest")}`,
         `Estimated quantity: ${data.get("quantity") || "Not provided"}`,
+        `Required delivery date: ${data.get("delivery") || "Not provided"}`,
+        `OEM / ODM requirements: ${data.get("customization") || "Not provided"}`,
         "",
         String(data.get("message"))
       ].join("\n");
-      status.textContent = "Opening your email app...";
+      status.textContent = "Opening your email app. If it does not open, email us directly at hz18751992559@gmail.com.";
       window.location.href = `mailto:hz18751992559@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
   }
