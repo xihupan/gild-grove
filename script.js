@@ -31,6 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  const requestedProduct = new URLSearchParams(window.location.search).get("product");
+  const interestField = document.querySelector("#interest");
+  if (requestedProduct && interestField) {
+    const matchingOption = Array.from(interestField.options).find((option) => option.value === requestedProduct);
+    if (matchingOption) interestField.value = requestedProduct;
+  }
+
   const form = document.querySelector("[data-inquiry-form]");
   const status = document.querySelector("[data-form-status]");
   if (form && status) {
