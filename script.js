@@ -34,24 +34,58 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("[data-inquiry-form]");
   const status = document.querySelector("[data-form-status]");
   if (form && status) {
-    form.addEventListener("submit", (event) => {
+    const submitButton = form.querySelector("[type=submit]");
+    const submitLabel = form.querySelector("[data-submit-label]");
+    const subjectField = form.querySelector("[name=_subject]");
+    const defaultSubmitLabel = submitLabel ? submitLabel.textContent : "Send wholesale inquiry";
+
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
       const data = new FormData(form);
-      const subject = `Wholesale inquiry: ${data.get("interest")}`;
-      const body = [
-        `Name: ${data.get("name")}`,
-        `Company: ${data.get("company") || "Not provided"}`,
-        `Email: ${data.get("email")}`,
-        `Country / region: ${data.get("country") || "Not provided"}`,
-        `Product: ${data.get("interest")}`,
-        `Estimated quantity: ${data.get("quantity") || "Not provided"}`,
-        `Required delivery date: ${data.get("delivery") || "Not provided"}`,
-        `OEM / ODM requirements: ${data.get("customization") || "Not provided"}`,
-        "",
-        String(data.get("message"))
-      ].join("\n");
-      status.textContent = "Opening your email app. If it does not open, email us directly at hz18751992559@gmail.com.";
-      window.location.href = `mailto:hz18751992559@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const interest = data.get("interest");
+      if (subjectField) subjectField.value = `Wholesale inquiry: ${interest}`;
+      if (submitButton) submitButton.disabled = true;
+      if (submitLabel) submitLabel.textContent = "Sending...";
+      form.setAttribute("aria-busy", "true");
+      status.dataset.state = "sending";
+      status.textContent = "Sending your inquiry...";
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" }
+        });
+
+        if (!response.ok) {
+          let message = "We could not send your inquiry online.";
+          try {
+            const result = await response.json();
+            if (Array.isArray(result.errors) && result.errors.length) {
+              message = result.errors.map((error) => error.message).join(" ");
+            }
+          } catch (error) {
+            // Use the fallback message when Formspree does not return JSON.
+          }
+          throw new Error(message);
+        }
+
+        status.dataset.state = "success";
+        status.textContent = "Thanks. Your inquiry has been sent. We will reply by email.";
+        form.reset();
+      } catch (error) {
+        status.dataset.state = "error";
+        status.textContent = `${error.message} Please email us directly at hz18751992559@gmail.com.`;
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+        if (submitLabel) submitLabel.textContent = defaultSubmitLabel;
+        form.removeAttribute("aria-busy");
+      }
     });
   }
 });
