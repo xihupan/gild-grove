@@ -14,7 +14,7 @@
 - 视觉风格：橙色、米白、温暖的家庭派对风格
 - 当前品牌标题：`Gild & Grove | Everyday Jewelry & Seasonal Gifts`
 - 当前品牌简介：`Elevated everyday jewelry, thoughtful gifts, and seasonal treasures for every celebration.`
-- 询盘邮箱：`hz18751992559@gmail.com`
+- 询盘邮箱：`sales@gildngrove.com`
 
 ### 1.2 技术和部署
 
@@ -267,7 +267,7 @@ FAQ 应回答：
 
 目前至少显示：
 
-- 业务邮箱：`hz18751992559@gmail.com`
+- 业务邮箱：`sales@gildngrove.com`
 - Wholesale inquiries
 - 当前通过邮箱回复
 
@@ -384,7 +384,7 @@ black-woven-pumpkin-outdoor-display.jpg
 
 - 提交成功提示。
 - 提交失败提示和备用邮箱。
-- 通知发送到 `hz18751992559@gmail.com`。
+- 通知发送到 `sales@gildngrove.com`，实际收件人需在 Formspree 后台确认。
 - 手机浏览器和没有邮件客户端的电脑也可以提交。
 - 询盘字段包含：姓名、公司、邮箱、国家/地区、产品、数量、交期、OEM/ODM 和留言。
 

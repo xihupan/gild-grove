@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         form.reset();
       } catch (error) {
         status.dataset.state = "error";
-        status.textContent = `${error.message} Please email us directly at hz18751992559@gmail.com.`;
+        status.textContent = `${error.message} Please email us directly at sales@gildngrove.com.`;
       } finally {
         if (submitButton) submitButton.disabled = false;
         if (submitLabel) submitLabel.textContent = defaultSubmitLabel;

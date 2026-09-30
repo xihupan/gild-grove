@@ -12,4 +12,4 @@ python -m http.server 4173
 
 Then open `http://localhost:4173`.
 
-The wholesale inquiry form submits through Formspree to `hz18751992559@gmail.com`. Its endpoint is configured in `index.html`, and the browser handles loading, success, and failure states in `script.js`. The form's data-use explanation is in `privacy.html`.
+The wholesale inquiry form submits through Formspree to `sales@gildngrove.com`. Its endpoint is configured in `index.html`, and the browser handles loading, success, and failure states in `script.js`. The form's data-use explanation is in `privacy.html`.
