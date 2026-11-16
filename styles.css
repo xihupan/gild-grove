@@ -320,3 +320,33 @@ h3 { margin-bottom: 12px; font-family: var(--serif); font-size: 25px; line-heigh
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+/* Miniature figurine sets: scoped to the new product and its collection card. */
+.tin-figurine-card picture, .tin-figurine-page .detail-gallery picture { display: block; }
+.tin-figurine-card .product-media picture { width: 100%; height: 100%; }
+.tin-figurine-card .product-media { background: var(--white); }
+.product-grid > .tin-figurine-card:last-child,
+.category-product-grid > .tin-figurine-card:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tin-figurine-card .product-body { display: flex; flex-direction: column; justify-content: center; padding: 36px; }
+.tin-figurine-card .product-media { aspect-ratio: auto; min-height: 380px; }
+.tin-figurine-card .product-media img { object-fit: contain; }
+.tin-figurine-card .product-description { min-height: 0; }
+.tin-figurine-card .button-outline { margin-top: 24px; }
+.tin-product-heading { margin-bottom: 36px; }
+.tin-product-heading h1 { max-width: 950px; margin: 0; font-size: clamp(38px, 4.5vw, 64px); line-height: 1.12; }
+.tin-figurine-page .detail-gallery picture { background: var(--white); }
+.tin-figurine-page .detail-gallery img, .tin-figurine-page .detail-gallery figure:first-child img { height: auto; aspect-ratio: 1 / 1; object-fit: contain; }
+.tin-figurine-page .detail-gallery figcaption { font-size: 12px; }
+@media (min-width: 681px) and (max-width: 900px) {
+  .tin-figurine-page .detail-grid { grid-template-columns: 1fr; gap: 36px; }
+  .tin-figurine-page .detail-copy { position: static; }
+  .tin-figurine-page .detail-section-grid { gap: 36px; }
+}
+@media (max-width: 680px) {
+  .product-grid > .tin-figurine-card:last-child,
+  .category-product-grid > .tin-figurine-card:last-child { display: block; }
+  .tin-figurine-card .product-media { aspect-ratio: 1 / .9; min-height: 0; }
+  .tin-figurine-card .product-body { padding: 24px; }
+  .tin-product-heading { margin-bottom: 28px; }
+  .tin-figurine-page .detail-grid { gap: 32px; }
+}
