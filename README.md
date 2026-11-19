@@ -6,10 +6,30 @@ Static English product showcase and wholesale inquiry website for Gild & Grove.
 
 From this directory, run:
 
-```powershell
-python -m http.server 4173
+```sh
+npx --yes wrangler@4.162.0 pages dev . --port 4173 --compatibility-date 2026-11-13
 ```
 
 Then open `http://localhost:4173`.
 
-The wholesale inquiry form submits through Formspree to `sales@gildngrove.com`. Its endpoint is configured in `index.html`, and the browser handles loading, success, and failure states in `script.js`. The form's data-use explanation is in `privacy.html`.
+This is a local Pages preview, without a deployment. It checks the clean HTML URLs,
+`.html` redirects, and the custom 404 page. A basic Python file server does not
+reproduce those routing rules. There is no build step or package manifest.
+
+The wholesale inquiry form uses the existing Formspree endpoint in `index.html`. The public inquiry email is `sales@gildngrove.com`; backend notification recipients and delivery need separate verification. The browser handles loading, success, and failure states in `script.js`, with data-use information in `privacy.html`.
+
+Keep the endpoint and existing field names when changing form presentation. Product
+URLs and legacy inquiry option values remain stable. General inquiries start with
+a neutral product choice. Browser tests must intercept Formspree requests before
+clicking Submit; a simulated success is not proof of email delivery.
+
+Fonts are served locally from `assets/fonts/` with their OFL license files.
+Decorative icons are inline SVG, so navigation does not require an icon CDN.
+
+## Building block products (2026-11-18)
+
+Three independent wholesale inquiry pages are linked from the homepage and Home & Gift Decor collection. Their primary images use the original supplied photos with responsive WebP and JPG files. The cow source is limited to 800px; the crow and otter have 1200px variants.
+
+Material, piece count, measurements, supplied components and commercial terms require confirmation. External marketplace images and numeric claims remain outside the public source and release package. They have not been promoted to supplied-product specifications.
+
+Product inquiry option values exactly match the three English product names. Context help follows the selected product and retains the existing tin-design guidance only for tin inquiries. No form service or recipient was changed.
