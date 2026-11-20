@@ -27,18 +27,97 @@ document.addEventListener('DOMContentLoaded', () => {
     mobile.addEventListener('change', () => setMenu(false));
   }
 
+  const keychain = window.GildGraduation;
+  const keychainProduct = '2027 Graduation Keychain';
+  const keychainOptions = keychain?.variants || [];
+  const findVariant = value => keychainOptions.find(option => option.id === value) || null;
+  const keychainPage = document.querySelector('[data-keychain-page]');
+  if (keychainPage && keychainOptions.length) {
+    const picker = keychainPage.querySelector('[data-keychain-picker]');
+    const image = keychainPage.querySelector('[data-keychain-picture] img');
+    const webp = keychainPage.querySelector('[data-keychain-picture] source');
+    const summary = keychainPage.querySelector('[data-keychain-summary]');
+    const defaultVariant = findVariant('gold-b');
+    const renderVariant = (variant, updateUrl = false, invalid = false) => {
+      const shown = variant || defaultVariant;
+      const base = `../assets/products/graduation-keychain-2027/${shown.image}`;
+      picker.value = variant?.id || '';
+      webp.srcset = `${base}-400.webp 400w, ${base}-800.webp 800w`;
+      image.src = `${base}-800.jpg`;
+      image.srcset = `${base}-400.jpg 400w, ${base}-800.jpg 800w`;
+      image.alt = shown.alt;
+      summary.textContent = variant ? shown.description : 'Preview: Gold-tone · Class of 2027. Choose a color and design, or ask us to confirm an option.';
+      keychainPage.querySelector('[data-keychain-color]').textContent = variant?.color || 'Choose an option';
+      keychainPage.querySelector('[data-keychain-design]').textContent = variant?.disc || 'Choose an option';
+      const notice = keychainPage.querySelector('[data-keychain-notice]');
+      notice.hidden = !invalid;
+      keychainPage.querySelectorAll('[data-keychain-inquiry]').forEach(link => {
+        const url = new URL('../', location.href);
+        url.searchParams.set('product', keychainProduct);
+        if (variant) url.searchParams.set('variant', variant.id);
+        url.hash = 'contact';
+        link.href = url.href;
+      });
+      keychainPage.querySelectorAll('[data-keychain-option]').forEach(link => {
+        if (link.dataset.keychainOption === variant?.id) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+      if (updateUrl) {
+        const url = new URL(location.href);
+        if (variant) url.searchParams.set('variant', variant.id);
+        else url.searchParams.delete('variant');
+        try { history.replaceState(history.state, '', url.href); } catch (_) { /* Selection still works without history. */ }
+      }
+    };
+    const restoreDetail = () => {
+      const requested = new URLSearchParams(location.search).get('variant');
+      const variant = requested === null ? defaultVariant : findVariant(requested);
+      renderVariant(variant, false, requested !== null && !variant);
+    };
+    picker.disabled = false;
+    picker.addEventListener('change', () => renderVariant(findVariant(picker.value), true));
+    keychainPage.querySelectorAll('[data-keychain-option]').forEach(link => link.addEventListener('click', event => {
+      event.preventDefault();
+      renderVariant(findVariant(link.dataset.keychainOption), true);
+      picker.focus({preventScroll: true});
+    }));
+    window.addEventListener('popstate', restoreDetail);
+    window.addEventListener('pageshow', restoreDetail);
+    restoreDetail();
+  }
+
   const interest = document.querySelector('#interest');
   const context = document.querySelector('#product-context');
+  const inquiryPicker = document.querySelector('#keychain-variant');
+  const inquiryOptions = document.querySelector('#keychain-inquiry-options');
+  const variantFields = document.querySelectorAll('[data-keychain-field]');
+  let selectionNotice = '';
   // Selection belongs to one history entry: reload/back preserves edits,
   // while a new product CTA creates a fresh, precise inquiry context.
   const remember = () => {
-    try { history.replaceState({...history.state, gildInquirySelection: interest.value}, ''); }
+    try { history.replaceState({...history.state, gildInquirySelection: interest.value, gildInquiryVariant: inquiryPicker?.value || ''}, ''); }
     catch (_) { /* The form still works when history state is unavailable. */ }
   };
   const contextDefault = 'Choose a product or describe what you are looking for in your message.';
   const blockProducts = new Set(['Coffee Crow Building Block Set', 'Rose Highland Cow Building Block Set', 'Heart-Holding Otter Building Block Set']);
   const updateContext = () => {
     if (!context) return;
+    const isKeychain = interest?.value === keychainProduct && keychainOptions.length;
+    const variant = isKeychain ? findVariant(inquiryPicker?.value) : null;
+    if (inquiryOptions && inquiryPicker) {
+      inquiryOptions.hidden = !isKeychain;
+      inquiryPicker.disabled = !isKeychain;
+      if (!isKeychain) inquiryPicker.value = '';
+      variantFields.forEach(field => {
+        field.disabled = !isKeychain;
+        const values = {variant_color: variant?.color || '', variant_design: variant?.disc || '', variant_year: '2027', product_details: variant ? `${keychainProduct}; ${variant.label}; Disc: ${variant.disc}; Year charm: 2027.` : `${keychainProduct}; Please confirm color & design; Year charm: 2027.`};
+        field.value = isKeychain ? values[field.name] || '' : '';
+      });
+      const inquirySummary = document.querySelector('#keychain-inquiry-summary');
+      if (inquirySummary) inquirySummary.textContent = variant ? `${variant.label}. Disc: ${variant.disc}. Year charm: 2027.` : 'Please confirm color & design. You can send an inquiry without choosing an option.';
+    }
+    if (selectionNotice) { context.textContent = selectionNotice; return; }
+    if (isKeychain) { context.textContent = 'Choose a color and design if known. Share your estimated quantity and destination; dimensions and packing details are available on request.'; return; }
     if (interest?.value === 'Miniature Figurine Sets in Tins') context.textContent = 'For tin sets, mention Design 01, 02, or 03 in your message.';
     else if (blockProducts.has(interest?.value)) context.textContent = 'Share your estimated quantity and destination, and ask us to confirm specifications, set contents and packing.';
     else if (interest?.value === 'Multiple products') context.textContent = 'Please identify the products or designs you mean in your message.';
@@ -47,39 +126,57 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const options = interest ? new Set(Array.from(interest.options, option => option.value)) : new Set();
   if (interest) {
-    let saved = null;
-    try { saved = history.state?.gildInquirySelection ?? null; } catch (_) { /* Use URL context if history state is unavailable. */ }
-    const requested = new URLSearchParams(location.search).get('product');
     const aliases = {
       'Both new home and gift decor products': 'Multiple products',
       'Both pumpkin collections': 'Multiple products',
       'Vintage Cat & Lady Figurines': 'Vintage Cat & Lady Resin Figurine'
     };
-    const mapped = aliases[requested] || requested;
-    if (saved !== null && options.has(saved)) interest.value = saved;
-    else if (mapped && options.has(mapped)) {
-      interest.value = mapped;
-      if (mapped === 'Multiple products' && context) context.textContent = 'Please identify the products or designs you mean in your message.';
-    } else {
-      interest.value = '';
-      if (requested && context) context.textContent = 'Please choose a product or describe what you are looking for in your message.';
-    }
-    updateContext();
-    interest.addEventListener('change', () => {
-      remember();
+    const restoreInquiry = () => {
+      let saved = null;
+      let savedVariant = '';
+      try { saved = history.state?.gildInquirySelection ?? null; savedVariant = history.state?.gildInquiryVariant || ''; } catch (_) { /* Fall back to URL context. */ }
+      const query = new URLSearchParams(location.search);
+      const requested = query.get('product');
+      const requestedVariant = query.get('variant');
+      const mapped = Object.hasOwn(aliases, requested) ? aliases[requested] : requested;
+      const useSaved = saved !== null && options.has(saved);
+      interest.value = useSaved ? saved : (options.has(mapped) ? mapped : '');
+      selectionNotice = !useSaved && requested && !options.has(mapped) ? 'That product was not recognized. Please choose a product or describe your request.' : '';
+      if (inquiryPicker) {
+        const candidate = useSaved ? savedVariant : requestedVariant;
+        const variant = interest.value === keychainProduct ? findVariant(candidate) : null;
+        inquiryPicker.value = variant?.id || '';
+        if (interest.value === keychainProduct && candidate && !variant) selectionNotice = 'That color and design was not recognized. Choose an option below or ask us to confirm it.';
+      }
       updateContext();
+    };
+    restoreInquiry();
+    window.addEventListener('popstate', restoreInquiry);
+    window.addEventListener('pageshow', event => { if (event.persisted) restoreInquiry(); });
+    interest.addEventListener('change', () => {
+      selectionNotice = '';
+      if (inquiryPicker) inquiryPicker.value = '';
+      updateContext();
+      remember();
+    });
+    inquiryPicker?.addEventListener('change', () => {
+      selectionNotice = '';
+      updateContext();
+      remember();
     });
     document.querySelectorAll('a[data-product]').forEach(link => link.addEventListener('click', () => {
       interest.value = options.has(link.dataset.product) ? link.dataset.product : '';
-      remember();
+      selectionNotice = '';
+      if (inquiryPicker) inquiryPicker.value = interest.value === keychainProduct ? findVariant(link.dataset.variant)?.id || '' : '';
       updateContext();
+      remember();
     }));
     // A general inquiry starts without an accidental product selection.
     document.querySelectorAll('a[href="#contact"]:not([data-product])').forEach(link => link.addEventListener('click', () => {
       interest.value = '';
+      selectionNotice = '';
       updateContext();
       remember();
-      updateContext();
     }));
   }
 
@@ -96,7 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sending) return;
       if (!form.checkValidity()) { form.reportValidity(); return; }
       sending = true;
-      subjectField.value = `Wholesale inquiry: ${interest.value || 'General product inquiry'}`;
+      updateContext();
+      const chosen = interest.value === keychainProduct ? findVariant(inquiryPicker?.value) : null;
+      subjectField.value = `Wholesale inquiry: ${interest.value || 'General product inquiry'}${chosen ? ` — ${chosen.label}` : ''}`;
       submitButton.disabled = true;
       submitLabel.textContent = 'Sending…';
       form.setAttribute('aria-busy', 'true');
@@ -110,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         status.dataset.state = 'success';
         status.textContent = 'Thank you. Your inquiry has been submitted. We will reply by email.';
         form.reset();
-        if (interest) { interest.value = ''; remember(); updateContext(); }
+        if (interest) { interest.value = ''; selectionNotice = ''; updateContext(); remember(); }
       } catch (_) {
         status.dataset.state = 'error';
         status.textContent = 'Your inquiry could not be sent. Your details are still here. Please try again or use the email link below.';

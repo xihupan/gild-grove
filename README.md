@@ -33,3 +33,27 @@ Three independent wholesale inquiry pages are linked from the homepage and Home 
 Material, piece count, measurements, supplied components and commercial terms require confirmation. External marketplace images and numeric claims remain outside the public source and release package. They have not been promoted to supplied-product specifications.
 
 Product inquiry option values exactly match the three English product names. Context help follows the selected product and retains the existing tin-design guidance only for tin inquiries. No form service or recipient was changed.
+
+
+## 2027 graduation keychain (2026-11-20)
+
+The series page is `/products/2027-graduation-keychain`, with ten valid color/design
+options and gold-b as the default. Public option data is in
+`assets/products/graduation-keychain-2027/options.js`; the corresponding forty
+400/800px WebP/JPG files are reused without upscaling. Rose-gold A/B/C/D follow
+the supplied image mapping, not the lettering used by the other colors.
+
+The homepage and Home & Gift Decor collection link to the series. Variant deep
+links use `?variant=<id>` on the detail page. Inquiry links use the existing
+`product` parameter plus `variant`; the optional homepage color/design picker
+submits the selected color, disc text and year. Clearing/changing the product
+clears irrelevant variant fields. Existing Formspree fields and endpoint remain.
+
+Material and individual packaging are supplier-listed. The 14.6g listing does
+not specify net/gross weight. Physical and package dimensions, MOQ, samples,
+lead time and customization terms require confirmation. No price or stock is
+asserted. Internal supplier/research evidence is excluded from public assets.
+
+For a release, copy only root HTML, styles.css, script.js, robots.txt, sitemap.xml,
+products/, collections/ and assets/ into the deployment directory. Exclude
+Git data, README, internal notes, backups, preview config and QA files.
