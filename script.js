@@ -1,4 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const filter = document.querySelector('[data-collection-filter]');
+  if (filter) {
+    const cards = Array.from(document.querySelectorAll('[data-product-id]'));
+    const count = document.querySelector('[data-catalog-count]');
+    const empty = document.querySelector('[data-catalog-empty]');
+    const applyFilter = category => {
+      cards.forEach(card => {
+        card.hidden = category !== 'all' && !card.dataset.categories.split(' ').includes(category);
+      });
+      filter.querySelectorAll('[data-filter]').forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.filter === category));
+      });
+      const visible = cards.filter(card => !card.hidden).length;
+      count.textContent = `${visible} product series`;
+      empty.hidden = visible > 0;
+    };
+    filter.addEventListener('click', event => {
+      const button = event.target.closest('[data-filter]');
+      if (button) applyFilter(button.dataset.filter);
+    });
+    document.querySelector('[data-show-all]').addEventListener('click', () => {
+      applyFilter('all');
+      filter.querySelector('[data-filter="all"]').focus();
+    });
+    applyFilter('all');
+    filter.hidden = false;
+  }
+
   const menuButton = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.site-nav');
   if (menuButton && nav) {
