@@ -431,6 +431,13 @@ h2 { font-size: clamp(32px, 3.4vw, 48px); line-height: 1.15; }
 .menu-toggle[aria-expanded="true"] .menu-close-icon { display: block; }
 .site-nav > a { min-height: 44px; display: inline-flex; align-items: center; }
 .footer-links a { padding: 6px 0; }
+.footer-grid > div { min-width: 0; }
+.footer-contact-item { padding: 6px 0; color: #d9c8b8; overflow-wrap: anywhere; }
+.footer-wechat-id { user-select: all; }
+@media (max-width:520px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-grid > div:first-child { grid-column: auto; }
+}
 #collection, #contact, #wholesale, #story, #faq { scroll-margin-top: 20px; }
 @media (max-width: 900px) {
   .detail-grid, .tin-figurine-page .detail-grid { grid-template-columns: 1fr; gap: 24px; }
