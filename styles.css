@@ -618,7 +618,7 @@ h1, h2, h3, p, a { overflow-wrap: break-word; }
 .catalog-cta { padding: 40px 0; background: var(--paper-deep); }
 .catalog-cta .shell { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .catalog-cta h2 { margin: 0; font-size: 30px; }
-.refreshed-detail { grid-template-areas: 'media heading' 'media copy'; gap: 24px 44px; align-items: start; }
+.refreshed-detail { grid-template-areas: 'media heading' 'media copy'; grid-template-rows: auto 1fr; gap: 24px 44px; align-items: start; }
 .refreshed-detail .product-heading { grid-area: heading; }
 .refreshed-detail .product-heading h1 { font-size: clamp(32px,3vw,46px); }
 .refreshed-detail .product-main-image { grid-area: media; }
@@ -644,7 +644,7 @@ h1, h2, h3, p, a { overflow-wrap: break-word; }
   .home-hero-copy { padding: 42px 0 12px; }
   .home-hero-copy h1 { max-width: 650px; }
   .home-hero-image { padding: 20px 0 36px; max-width: 520px; margin-inline: auto; }
-  .refreshed-detail { grid-template-areas: 'heading' 'media' 'copy'; grid-template-columns: 1fr; }
+  .refreshed-detail { grid-template-areas: 'heading' 'media' 'copy'; grid-template-columns: 1fr; grid-template-rows: auto auto auto; }
   .buying-steps { grid-template-columns: 1fr; gap: 14px; }
   .collection-categories { gap: 24px; }
 }
