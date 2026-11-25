@@ -690,3 +690,11 @@ h1, h2, h3, p, a { overflow-wrap: break-word; }
 @media (min-width:901px) {
   .home-hero-image img { max-height: 540px; }
 }
+
+/* Animal collection: preserve the shared catalog and give comparisons room. */
+.animal-collection .catalog-body p { margin: 0 0 20px; color: var(--muted); font-size: 16px; line-height: 1.6; }
+.animal-collection .catalog-image { background: var(--white); }
+.animal-collection .catalog-image img { object-fit: contain; }
+.animal-collection .size-table th[scope="row"] { min-width: 180px; }
+.animal-collection .size-table td { min-width: 160px; vertical-align: top; }
+.animal-collection .catalog-cta h2 { max-width: 620px; }

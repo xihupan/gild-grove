@@ -57,3 +57,33 @@ asserted. Internal supplier/research evidence is excluded from public assets.
 For a release, copy only root HTML, styles.css, script.js, robots.txt, sitemap.xml,
 products/, collections/ and assets/ into the deployment directory. Exclude
 Git data, README, internal notes, backups, preview config and QA files.
+
+## Wholesale search pages (2026-11-25)
+
+The five current focus products have distinct wholesale titles, descriptions,
+introductions and procurement FAQs. The animal building block collection at
+`/collections/animal-building-block-sets` compares the otter, Highland cow and
+coffee crow designs. It is linked from the homepage, full collection and all
+three animal detail pages. Existing product URLs, supplied-version boundaries,
+keychain option IDs, inquiry values and the Formspree endpoint remain stable.
+
+The current source already uses WebPage/BreadcrumbList rather than incomplete
+Product markup for the cat figurines. An older Search Console Product error
+does not justify inventing prices, stock or reviews.
+
+No GA4 or GTM account identifier is configured in this source. If the owner
+connects an appropriate existing `window.gtag` installation, the shared script
+emits `generate_lead` only after Formspree returns a successful response. It
+includes only the selected product name and valid keychain option ID, never
+contact fields or message text. Email and inquiry-link clicks are separate
+events and do not count as successful submissions. An absent or failing
+analytics installation does not block the form. A successful HTTP response
+still does not prove delivery to a notification inbox.
+
+Pushing the production branch can trigger Cloudflare Pages. Review the feature
+branch preview before merging through the established release flow.
+
+Run `node tests/inquiry-regression.cjs` to check product/variant context,
+successful and failed submissions, duplicate-submit protection and the optional
+analytics events. The tests stub Formspree and analytics; they send no real
+inquiries and cannot verify delivery to a notification inbox.

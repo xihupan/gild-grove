@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Reuse an existing analytics installation, if the site owner configures one.
+  // Analytics failures must never interrupt a buyer's inquiry.
+  const trackInquiryEvent = (name, parameters) => {
+    if (typeof window.gtag !== 'function') return;
+    try { window.gtag('event', name, parameters); }
+    catch (_) { /* The inquiry remains usable without analytics. */ }
+  };
+  document.addEventListener('click', event => {
+    const link = event.target.closest?.('a[href]');
+    if (!link) return;
+    const url = new URL(link.href, location.href);
+    if (url.protocol === 'mailto:') {
+      trackInquiryEvent('contact_email_click', {contact_method: 'email'});
+    } else if (url.origin === location.origin && url.pathname === '/' && url.hash === '#contact') {
+      trackInquiryEvent('wholesale_inquiry_click', {contact_method: 'form'});
+    }
+  });
+
   const filter = document.querySelector('[data-collection-filter]');
   if (filter) {
     const cards = Array.from(document.querySelectorAll('[data-product-id]'));
@@ -236,6 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) throw new Error('submission-failed');
         status.dataset.state = 'success';
         status.textContent = 'Thank you. Your inquiry has been submitted. We will reply by email.';
+        trackInquiryEvent('generate_lead', {
+          method: 'wholesale_inquiry',
+          product_name: options.has(interest?.value) && interest.value ? interest.value : 'General product inquiry',
+          ...(chosen ? {variant_id: chosen.id} : {})
+        });
         form.reset();
         if (interest) { interest.value = ''; selectionNotice = ''; updateContext(); remember(); }
       } catch (_) {
