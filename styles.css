@@ -698,3 +698,16 @@ h1, h2, h3, p, a { overflow-wrap: break-word; }
 .animal-collection .size-table th[scope="row"] { min-width: 180px; }
 .animal-collection .size-table td { min-width: 160px; vertical-align: top; }
 .animal-collection .catalog-cta h2 { max-width: 620px; }
+
+/* Highland cow squishy: reuse the catalog and keep image lettering readable. */
+.squishy-card .catalog-tag { color: var(--orange-dark); font-size: 14px; line-height: 1.5; margin: 0 0 10px; }
+.squishy-card .catalog-summary { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0 0 20px; }
+.squishy-page .detail-specs dt, .squishy-page .detail-gallery figcaption { font-size: 14px; }
+.squishy-page .squishy-gallery a { display: block; }
+@media (min-width: 1101px) {
+  .new-arrivals-grid.with-squishy { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+  .new-arrivals-grid.with-squishy .catalog-body { padding: 18px 14px; }
+}
+@media (min-width: 681px) {
+  .squishy-gallery figure:last-child { grid-column: 1 / -1; max-width: 800px; justify-self: center; }
+}

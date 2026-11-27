@@ -87,3 +87,21 @@ Run `node tests/inquiry-regression.cjs` to check product/variant context,
 successful and failed submissions, duplicate-submit protection and the optional
 analytics events. The tests stub Formspree and analytics; they send no real
 inquiries and cannot verify delivery to a notification inbox.
+
+
+## Highland cow squishy (2026-11-27)
+
+The orange Highland Cow Squishy has its own product page, a homepage New Arrivals
+card and a Squishy Toys filter in the full collection. It is a separate product
+from the Rose Highland Cow Building Block Set. The stable inquiry option value
+is `Highland Cow Squishy`; all product CTAs use the existing `product` parameter.
+
+Material (TPR), approximately 13 × 9 × 14 cm dimensions, ages 14+ and plastic bag
+packing are supplier-listed. Approximate 380 g net weight per piece is confirmed
+by the owner and excludes packaging. Other commercial terms remain per inquiry.
+
+The 800px original main photo is preserved; secondary English images are
+AI-edited illustrations. The squeeze sequence was omitted because its rebound
+footer lacked product-specific evidence. No rebound time, certifications, price,
+stock, customization or low-age suitability are asserted. Internal supplier
+screenshots and planning files are not release assets.

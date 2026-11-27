@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.gildngrove.com/</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -32,7 +32,7 @@
   </url>
   <url>
     <loc>https://www.gildngrove.com/collections/home-gift-decor</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -62,7 +62,7 @@
   </url>
   <url>
     <loc>https://www.gildngrove.com/products/rose-highland-cow-building-block-set</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -81,5 +81,9 @@
   <url>
     <loc>https://www.gildngrove.com/collections/animal-building-block-sets</loc>
     <lastmod>2026-11-25</lastmod>
+  </url>
+  <url>
+    <loc>https://www.gildngrove.com/products/highland-cow-squishy-orange</loc>
+    <lastmod>2026-11-27</lastmod>
   </url>
 </urlset>
